@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0D0D0D;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1A1A1A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #107C10;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0E7A0E;
+}
+
+/* Glow effects */
+.glow-text {
+  animation: pulse-glow 3s ease-in-out infinite;
+  text-shadow: 0 0 10px #107C10, 0 0 20px #107C10, 0 0 30px #107C10;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(16, 124, 16, 0.5), 0 0 20px rgba(16, 124, 16, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(16, 124, 16, 0.8), 0 0 30px rgba(16, 124, 16, 0.5);
+  }
+}
+
+.glow-border {
+  box-shadow: 0 0 10px #107C10, inset 0 0 10px rgba(16, 124, 16, 0.2);
+}
+
+/* Animated background */
+.animated-bg {
+  background: linear-gradient(-45deg, #0D0D0D, #1A1A1A, #0A5F0A, #0D0D0D);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Particle effect */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #107C10;
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* Scanlines effect */
+@keyframes scan-lines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.scanlines {
+  animation: scan-lines 8s linear infinite;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(16, 124, 16, 0.03) 0px,
+    rgba(16, 124, 16, 0.03) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* Xbox glow utility classes */
+.xbox-glow {
+  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4), inset 0 0 10px rgba(16, 124, 16, 0.1);
+}
+
+.xbox-glow-hover {
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4), inset 0 0 10px rgba(16, 124, 16, 0.1);
+}
+
+.xbox-glow-hover:hover {
+  box-shadow: 0 0 40px rgba(16, 124, 16, 0.6), inset 0 0 15px rgba(16, 124, 16, 0.2);
+}
+
+.text-glow {
+  color: #107C10;
+  text-shadow: 0 0 8px rgba(16, 124, 16, 0.5);
+}
