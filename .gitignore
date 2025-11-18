@@ -1,0 +1,121 @@
+# Root .gitignore for LoanX DApp
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.env
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Hardhat files
+cache/
+artifacts/
+deployments/
+ignition/deployments/chain-31337/
+typechain/
+typechain-types/
+
+# Coverage
+coverage/
+coverage.json
+*.lcov
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+ENV/
+env/
+.venv/
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+temp/
+tmp/
+
+# Miscellaneous
+*.zip
+*.tar.gz
+*.rar
+*.sw?
+
+# Testing
+.nyc_output/
+
+# Misc
+*.local
+.cache/
+.temp/
+.tmp/
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Hardhat Ignition
+ignition/deployments/chain-*/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Local blockchain data
+data/
+
+MDs/*

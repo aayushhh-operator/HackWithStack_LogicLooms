@@ -1,10 +1,14 @@
 import { useState } from 'react'
-import { ArrowRight, Lock, Mail, Eye, EyeOff } from 'lucide-react'
+import { ArrowRight, Lock, Mail, Eye, EyeOff, User, Phone } from 'lucide-react'
 import { Button } from './ui/button'
+
+const API_URL = 'http://localhost:5000/api'
 
 const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
   const [mode, setMode] = useState('login')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -19,34 +23,106 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
     setIsLoading(true)
 
     // Validation
-    if (!email || !password) {
-      setError('Email and password required')
-      setIsLoading(false)
-      return
+    if (mode === 'signup') {
+      if (!name || !email || !phone || !password) {
+        setError('All fields are required')
+        setIsLoading(false)
+        return
+      }
+      if (password !== confirmPassword) {
+        setError('Passwords do not match')
+        setIsLoading(false)
+        return
+      }
+      if (password.length < 8) {
+        setError('Password must be at least 8 characters')
+        setIsLoading(false)
+        return
+      }
+    } else {
+      if (!email || !password) {
+        setError('Email and password required')
+        setIsLoading(false)
+        return
+      }
     }
 
-    if (mode === 'signup' && password !== confirmPassword) {
-      setError('Passwords do not match')
-      setIsLoading(false)
-      return
-    }
+    try {
+      if (mode === 'signup') {
+        // Signup API call
+        const response = await fetch(`${API_URL}/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            phone,
+            password,
+          }),
+        })
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters')
-      setIsLoading(false)
-      return
-    }
+        const data = await response.json()
 
-    // Simulate auth delay
-    setTimeout(() => {
-      onAuthSuccess(email, 'borrower')
+        if (!response.ok) {
+          setError(data.error || 'Signup failed')
+          setIsLoading(false)
+          return
+        }
+
+        // Store user data and token
+        localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
+        localStorage.setItem('logiclooms:token', data.user.token)
+
+        // Call success handler with full user data
+        onAuthSuccess(data.user)
+        setIsLoading(false)
+
+        // Reset form
+        setName('')
+        setEmail('')
+        setPhone('')
+        setPassword('')
+        setConfirmPassword('')
+        setMode('login')
+      } else {
+        // Login API call
+        const response = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          setError(data.error || 'Login failed')
+          setIsLoading(false)
+          return
+        }
+
+        // Store user data and token
+        localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
+        localStorage.setItem('logiclooms:token', data.user.token)
+
+        // Call success handler with full user data
+        onAuthSuccess(data.user)
+        setIsLoading(false)
+
+        // Reset form
+        setEmail('')
+        setPassword('')
+      }
+    } catch (err) {
+      setError('Network error. Please try again.')
       setIsLoading(false)
-      // Reset form
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
-      setMode('login')
-    }, 1000)
+    }
   }
 
   return (
@@ -89,6 +165,26 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name (Signup only) */}
+          {mode === 'signup' && (
+            <div>
+              <label className="block text-sm font-bold text-white mb-2">
+                FULL NAME
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 w-5 h-5 text-xbox-green/50" />
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="John Doe"
+                  required
+                  className="w-full bg-xbox-dark border border-xbox-green/30 rounded-sm pl-10 pr-4 py-2 text-white placeholder:text-gray-500 focus:outline-none focus:border-xbox-green focus:ring-1 focus:ring-xbox-green transition"
+                />
+              </div>
+            </div>
+          )}
+
           {/* Email */}
           <div>
             <label className="block text-sm font-bold text-white mb-2">
@@ -101,10 +197,34 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
+                required
                 className="w-full bg-xbox-dark border border-xbox-green/30 rounded-sm pl-10 pr-4 py-2 text-white placeholder:text-gray-500 focus:outline-none focus:border-xbox-green focus:ring-1 focus:ring-xbox-green transition"
               />
             </div>
           </div>
+
+          {/* Phone (Signup only) */}
+          {mode === 'signup' && (
+            <div>
+              <label className="block text-sm font-bold text-white mb-2">
+                PHONE NUMBER
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3 top-3 w-5 h-5 text-xbox-green/50" />
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+1234567890"
+                  required
+                  className="w-full bg-xbox-dark border border-xbox-green/30 rounded-sm pl-10 pr-4 py-2 text-white placeholder:text-gray-500 focus:outline-none focus:border-xbox-green focus:ring-1 focus:ring-xbox-green transition"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* User Type (Signup only) */}
+          {/* Removed userType UI completely */}
 
           {/* Password */}
           <div>
@@ -183,8 +303,12 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 onClick={() => {
                   setMode('signup')
                   setError('')
+                  setName('')
+                  setEmail('')
+                  setPhone('')
                   setPassword('')
                   setConfirmPassword('')
+                  // setUserType('borrower') // REMOVE THIS LINE
                 }}
                 className="text-xbox-green font-bold hover:underline"
               >
@@ -199,8 +323,12 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 onClick={() => {
                   setMode('login')
                   setError('')
+                  setName('')
+                  setEmail('')
+                  setPhone('')
                   setPassword('')
                   setConfirmPassword('')
+                  // setUserType('borrower') // REMOVE THIS LINE
                 }}
                 className="text-xbox-green font-bold hover:underline"
               >

@@ -1,0 +1,21 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "MicroLending Smart Contract Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx hardhat test"
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "hardhat"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "hardhat": "^2.22.0"
+  }
+}

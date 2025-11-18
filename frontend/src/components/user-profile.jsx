@@ -2,7 +2,7 @@ import { LogOut } from 'lucide-react'
 import { Button } from './ui/button'
 import { useNavigate } from 'react-router-dom'
 
-const UserProfile = ({ email, role, onLogout }) => {
+const UserProfile = ({ name, email, role, onLogout }) => {
   const navigate = useNavigate()
 
   const handleDashboard = () => {
@@ -12,7 +12,7 @@ const UserProfile = ({ email, role, onLogout }) => {
   return (
     <div className="flex items-center gap-4">
       <div className="hidden sm:block text-right">
-        <div className="text-sm font-bold text-white">{email}</div>
+        <div className="text-sm font-bold text-white">{name || email}</div>
       </div>
       <button
         onClick={handleDashboard}

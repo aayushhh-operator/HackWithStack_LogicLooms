@@ -1,26 +1,70 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Zap, Mail, Lock, User, ArrowLeft } from 'lucide-react'
+import { Zap, Mail, Lock, User, ArrowLeft, Phone } from 'lucide-react'
+
+const API_URL = 'http://localhost:5000/api'
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: '',
-    userType: 'borrower',
   })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    setError('')
+    
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!')
+      setError('Passwords do not match!')
       return
     }
-    // TODO: Implement actual authentication
-    navigate('/dashboard')
+    
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters')
+      return
+    }
+    
+    setIsLoading(true)
+    
+    try {
+      const response = await fetch(`${API_URL}/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        setError(data.error || 'Signup failed')
+        setIsLoading(false)
+        return
+      }
+      
+      // Store user data and token
+      localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
+      localStorage.setItem('logiclooms:token', data.user.token)
+      
+      // Navigate to dashboard
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Network error. Please try again.')
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -68,6 +112,11 @@ const Signup = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-900/20 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Full Name
@@ -106,31 +155,19 @@ const Signup = () => {
 
             <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">
-                I want to
+                Phone Number
               </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, userType: 'borrower' })}
-                  className={`py-3 px-4 rounded-lg border-2 transition-all duration-300 ${
-                    formData.userType === 'borrower'
-                      ? 'border-xbox-green bg-xbox-green/20 text-xbox-green glow-border'
-                      : 'border-xbox-green/30 text-gray-400 hover:border-xbox-green/50'
-                  }`}
-                >
-                  Borrow
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, userType: 'lender' })}
-                  className={`py-3 px-4 rounded-lg border-2 transition-all duration-300 ${
-                    formData.userType === 'lender'
-                      ? 'border-xbox-green bg-xbox-green/20 text-xbox-green glow-border'
-                      : 'border-xbox-green/30 text-gray-400 hover:border-xbox-green/50'
-                  }`}
-                >
-                  Lend
-                </button>
+              <div className="relative">
+                <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-xbox-green" />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-12 pr-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white focus:outline-none focus:border-xbox-green focus:ring-2 focus:ring-xbox-green/50 transition-all"
+                  placeholder="+1234567890"
+                />
               </div>
             </div>
 
@@ -185,9 +222,10 @@ const Signup = () => {
 
             <button
               type="submit"
-              className="w-full py-4 bg-xbox-green hover:bg-xbox-green-light rounded-lg text-white font-bold text-lg transition-all duration-300 glow-border hover:scale-105"
+              disabled={isLoading}
+              className="w-full py-4 bg-xbox-green hover:bg-xbox-green-light rounded-lg text-white font-bold text-lg transition-all duration-300 glow-border hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Account
+              {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 

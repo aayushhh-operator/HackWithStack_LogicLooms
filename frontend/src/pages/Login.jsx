@@ -3,17 +3,52 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Zap, Mail, Lock, ArrowLeft } from 'lucide-react'
 
+const API_URL = 'http://localhost:5000/api'
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: Implement actual authentication
-    navigate('/dashboard')
+    setError('')
+    setIsLoading(true)
+    
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        setError(data.error || 'Login failed')
+        setIsLoading(false)
+        return
+      }
+      
+      // Store user data and token
+      localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
+      localStorage.setItem('logiclooms:token', data.user.token)
+      
+      // Navigate to dashboard
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Network error. Please try again.')
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -61,6 +96,11 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-900/20 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">
                 Email Address
@@ -115,9 +155,10 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full py-4 bg-xbox-green hover:bg-xbox-green-light rounded-lg text-white font-bold text-lg transition-all duration-300 glow-border hover:scale-105"
+              disabled={isLoading}
+              className="w-full py-4 bg-xbox-green hover:bg-xbox-green-light rounded-lg text-white font-bold text-lg transition-all duration-300 glow-border hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
 

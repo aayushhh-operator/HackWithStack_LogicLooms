@@ -20,8 +20,8 @@ const LandingPage = () => {
     }
   }, [])
 
-  const handleAuthSuccess = (email, role = 'borrower') => {
-    const userData = { email, role }
+  const handleAuthSuccess = (userData) => {
+    // userData is the full user object from the API response
     setUser(userData)
     localStorage.setItem('logiclooms:user', JSON.stringify(userData))
     setIsAuthOpen(false)
@@ -30,6 +30,7 @@ const LandingPage = () => {
   const handleLogout = () => {
     setUser(null)
     localStorage.removeItem('logiclooms:user')
+    localStorage.removeItem('logiclooms:token')
   }
 
   return (
@@ -62,7 +63,7 @@ const LandingPage = () => {
             </a>
           </div>
           {user ? (
-            <UserProfile email={user.email} role={user.role} onLogout={handleLogout} />
+            <UserProfile name={user.name} email={user.email} role={user.role} onLogout={handleLogout} />
           ) : (
             <Button
               onClick={() => setIsAuthOpen(true)}
