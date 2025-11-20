@@ -27,12 +27,12 @@ users_collection = db['users']
 # JWT secret key (in production, use a secure random key)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-change-in-production')
 
-# Test MongoDB connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(f"MongoDB connection error: {e}")
+# Test MongoDB connection (commented out to allow server to start without MongoDB)
+# try:
+#     client.admin.command('ping')
+#     print("Pinged your deployment. You successfully connected to MongoDB!")
+# except Exception as e:
+#     print(f"MongoDB connection error: {e}")
 
 def generate_token(user_id):
     """Generate JWT token for user"""

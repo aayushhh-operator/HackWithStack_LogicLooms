@@ -237,25 +237,25 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-xbox-dark text-white">
-      <nav className="bg-xbox-gray/60 backdrop-blur border-b border-xbox-green/30 px-6 py-4">
+    <div className="min-h-screen bg-gray-50 text-black">
+      <nav className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-xbox-green rounded-sm flex items-center justify-center glow-border">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
               <Zap className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-[0.3em]">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">
                 Dashboard
               </p>
-              <h1 className="text-2xl font-black glow-text">LOANX</h1>
+              <h1 className="text-2xl font-bold text-black">LOANX</h1>
             </div>
           </div>
           <div className="flex items-center gap-3">
             {!isConnected ? (
               <Button
                 onClick={connectWallet}
-                className="bg-xbox-green hover:bg-xbox-green/80 text-white"
+                className="btn-primary"
               >
                 <Wallet className="w-4 h-4 mr-2" />
                 Connect Wallet
@@ -263,15 +263,15 @@ const Dashboard = () => {
             ) : (
               <>
                 <div className="text-right mr-4">
-                  <p className="text-xs text-gray-400">Connected</p>
-                  <p className="text-sm font-mono text-xbox-green">
+                  <p className="text-xs text-gray-500">Connected</p>
+                  <p className="text-sm font-mono text-blue-600">
                     {account?.slice(0, 6)}...{account?.slice(-4)}
                   </p>
                 </div>
                 <Button
                   onClick={fetchLoans}
                   variant="outline"
-                  className="border-xbox-green text-white hover:bg-xbox-green/10"
+                  className="btn-outline"
                   disabled={loading}
                 >
                   <RefreshCw
@@ -283,7 +283,7 @@ const Dashboard = () => {
             )}
             <Button
               variant="outline"
-              className="border-xbox-green text-white hover:bg-xbox-green/10"
+              className="btn-outline"
               onClick={handleLogout}
             >
               <LogOut className="w-4 h-4 mr-2" />
@@ -296,11 +296,11 @@ const Dashboard = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-10">
         <div className="mb-8 space-y-2">
           <div className="flex items-center gap-3">
-            <div className="text-4xl font-bold text-glow">
+            <div className="text-4xl font-bold text-black">
               {user ? `Welcome, ${user.name}` : "LOANX ARENA"}
             </div>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-500">
             Real-time Micro-Lending Intelligence • Ethereum-Secured Dashboard
           </p>
         </div>
@@ -312,7 +312,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setShowBorrowModal(true)}
               disabled={!isConnected}
-              className="xbox-glow bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-lg px-8 py-6 rounded-lg border-2 border-blue-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/50 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary text-lg px-8 py-6 w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Request Loan
             </Button>
@@ -322,7 +322,7 @@ const Dashboard = () => {
                 await fetchAvailableLoans();
               }}
               disabled={!isConnected}
-              className="xbox-glow bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white font-bold text-lg px-8 py-6 rounded-lg border-2 border-purple-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/50 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-outline text-lg px-8 py-6 w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Browse Loans
             </Button>
@@ -330,10 +330,10 @@ const Dashboard = () => {
 
           {/* Graph - col 2&3 (span 2 with more width) */}
           <div className="lg:col-span-2 min-h-[280px] flex items-center">
-            <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70 w-full h-full flex flex-col justify-center">
+            <Card className="glass-card w-full h-full flex flex-col justify-center">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Financial Overview</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg text-black">Financial Overview</CardTitle>
+                <CardDescription className="text-gray-500">
                   Lending vs Borrowing Trends (Live Data)
                 </CardDescription>
               </CardHeader>
@@ -341,7 +341,7 @@ const Dashboard = () => {
                 <ResponsiveContainer width="100%" height={250}>
                   <AreaChart
                     data={chartData}
-                    margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+                    margin={{ top: 10, right: 30, left: 10, bottom: 10 }}
                   >
                     <defs>
                       <linearGradient
@@ -353,12 +353,12 @@ const Dashboard = () => {
                       >
                         <stop
                           offset="5%"
-                          stopColor="#65dc71"
+                          stopColor="#4169E1"
                           stopOpacity={0.8}
                         />
                         <stop
                           offset="95%"
-                          stopColor="#65dc71"
+                          stopColor="#4169E1"
                           stopOpacity={0.1}
                         />
                       </linearGradient>
@@ -381,39 +381,41 @@ const Dashboard = () => {
                         />
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#65dc7125" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                     <XAxis
                       dataKey="month"
-                      stroke="#65dc7166"
-                      tick={{ fontSize: 12 }}
+                      stroke="#9CA3AF"
+                      tick={{ fontSize: 14, fill: '#1F2937', fontWeight: 500 }}
                     />
-                    <YAxis stroke="#65dc7166" tick={{ fontSize: 12 }} />
+                    <YAxis stroke="#9CA3AF" tick={{ fontSize: 14, fill: '#1F2937', fontWeight: 500 }} />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "#181818e6",
-                        border: "2px solid #65dc7180",
-                        borderRadius: "12px",
-                        color: "#65dc71",
-                        boxShadow: "0 0 20px #65dc714d",
+                        backgroundColor: "#ffffff",
+                        border: "2px solid #E5E7EB",
+                        borderRadius: "8px",
+                        color: "#111827",
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                        fontSize: "14px",
+                        fontWeight: 500,
                       }}
                       formatter={(value) => `${Number(value).toFixed(2)} ETH`}
-                      labelStyle={{ color: "#65dc71" }}
+                      labelStyle={{ color: "#111827", fontWeight: 600 }}
                     />
                     <Legend
-                      wrapperStyle={{ color: "#65dc71cc" }}
+                      wrapperStyle={{ fontSize: "14px", fontWeight: 500, color: "#374151" }}
                       verticalAlign="top"
                       height={36}
                     />
                     <Area
                       type="monotone"
                       dataKey="lent"
-                      stroke="#65dc71"
+                      stroke="#4169E1"
                       strokeWidth={3}
                       fillOpacity={1}
                       fill="url(#colorLent)"
                       name="Amount Lent"
-                      dot={{ fill: "#65dc71cc", r: 4 }}
-                      activeDot={{ r: 6, fill: "#65dc71" }}
+                      dot={{ fill: "#4169E1cc", r: 4 }}
+                      activeDot={{ r: 6, fill: "#4169E1" }}
                       isAnimationActive={true}
                       animationDuration={800}
                     />
@@ -443,7 +445,7 @@ const Dashboard = () => {
             title="Total Lent"
             value={`${totalLent.toFixed(4)} ETH`}
             hint={`${activeLends} active missions`}
-            icon={<TrendingUp className="w-6 h-6 text-xbox-green/80" />}
+            icon={<TrendingUp className="w-6 h-6 text-blue-600/80" />}
           />
           <StatCard
             title="Total Borrowed"
@@ -462,22 +464,22 @@ const Dashboard = () => {
             title="Reputation Score"
             value={isConnected ? reputation.toString() : "0"}
             hint={isConnected ? "Ethereum verified" : "Connect wallet"}
-            icon={<Shield className="w-6 h-6 text-xbox-green/80" />}
+            icon={<Shield className="w-6 h-6 text-blue-600/80" />}
           />
         </div>
 
         {!isConnected ? (
-          <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70 mb-6">
+          <Card className="glass-card mb-6">
             <CardContent className="py-10 text-center">
-              <Wallet className="w-16 h-16 mx-auto mb-4 text-xbox-green/50" />
-              <h3 className="text-xl font-bold mb-2">Connect Your Wallet</h3>
-              <p className="text-gray-400 mb-6">
+              <Wallet className="w-16 h-16 mx-auto mb-4 text-blue-600/50" />
+              <h3 className="text-xl font-bold mb-2 text-black">Connect Your Wallet</h3>
+              <p className="text-gray-500 mb-6">
                 Connect MetaMask to view your lending and borrowing history on
                 the blockchain
               </p>
               <Button
                 onClick={connectWallet}
-                className="bg-xbox-green hover:bg-xbox-green/80 text-white"
+                className="btn-primary"
               >
                 <Wallet className="w-4 h-4 mr-2" />
                 Connect MetaMask
@@ -486,7 +488,7 @@ const Dashboard = () => {
           </Card>
         ) : (
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6 bg-xbox-gray/70 border border-xbox-green/30 p-1 rounded-lg">
+            <TabsList className="grid w-full grid-cols-3 mb-6 bg-white/70 border border-blue-600/30 p-1 rounded-lg">
               <TabsTrigger value="all">All Transactions</TabsTrigger>
               <TabsTrigger value="lending">Lending Records</TabsTrigger>
               <TabsTrigger value="borrowing">Borrowing Records</TabsTrigger>
@@ -494,9 +496,9 @@ const Dashboard = () => {
 
             <TabsContent value="all" className="space-y-4">
               {loading ? (
-                <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70">
+                <Card className="glass-card border-blue-600/30 bg-white/70">
                   <CardContent className="py-10 text-center">
-                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-xbox-green" />
+                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-blue-600" />
                     <p className="text-gray-400">Loading transactions...</p>
                   </CardContent>
                 </Card>
@@ -516,9 +518,9 @@ const Dashboard = () => {
 
             <TabsContent value="lending" className="space-y-4">
               {loading ? (
-                <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70">
+                <Card className="glass-card border-blue-600/30 bg-white/70">
                   <CardContent className="py-10 text-center">
-                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-xbox-green" />
+                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-blue-600" />
                     <p className="text-gray-400">Loading transactions...</p>
                   </CardContent>
                 </Card>
@@ -538,9 +540,9 @@ const Dashboard = () => {
 
             <TabsContent value="borrowing" className="space-y-4">
               {loading ? (
-                <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70">
+                <Card className="glass-card border-blue-600/30 bg-white/70">
                   <CardContent className="py-10 text-center">
-                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-xbox-green" />
+                    <RefreshCw className="w-8 h-8 mx-auto mb-2 animate-spin text-blue-600" />
                     <p className="text-gray-400">Loading transactions...</p>
                   </CardContent>
                 </Card>
@@ -564,8 +566,8 @@ const Dashboard = () => {
       {/* Loan Request Modal */}
       {showBorrowModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <Card className="xbox-glow border-xbox-green/50 bg-xbox-gray w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <CardHeader className="sticky top-0 bg-xbox-gray border-b border-xbox-green/30 flex flex-row items-center justify-between">
+          <Card className="glass-card border-blue-600/50 bg-white w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <CardHeader className="sticky top-0 bg-white border-b border-blue-600/30 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-2xl">REQUEST LOAN</CardTitle>
                 <CardDescription className="mt-1">
@@ -574,7 +576,7 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={() => setShowBorrowModal(false)}
-                className="p-1 hover:bg-xbox-green/20 rounded transition-colors text-3xl"
+                className="p-1 hover:bg-blue-600/20 rounded transition-colors text-3xl"
               >
                 ×
               </button>
@@ -591,7 +593,7 @@ const Dashboard = () => {
                     setLoanFormData({ ...loanFormData, amount: e.target.value })
                   }
                   placeholder="Enter amount to borrow"
-                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 border border-blue-600/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                   min="0"
                   step="0.01"
                 />
@@ -610,7 +612,7 @@ const Dashboard = () => {
                     })
                   }
                   placeholder="Enter interest rate"
-                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 border border-blue-600/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                   min="0"
                   step="0.1"
                 />
@@ -629,7 +631,7 @@ const Dashboard = () => {
                     })
                   }
                   placeholder="Enter loan duration"
-                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-50 border border-blue-600/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
                   min="1"
                 />
               </div>
@@ -646,7 +648,7 @@ const Dashboard = () => {
                     })
                   }
                   placeholder="Why do you need this loan?"
-                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all resize-none"
+                  className="w-full px-4 py-3 bg-gray-50 border border-blue-600/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all resize-none"
                   rows={3}
                 />
               </div>
@@ -654,7 +656,7 @@ const Dashboard = () => {
                 <Button
                   onClick={() => setShowBorrowModal(false)}
                   variant="outline"
-                  className="flex-1 border-xbox-green/30 text-white hover:bg-xbox-green/10"
+                  className="flex-1 border-blue-600/30 text-white hover:bg-blue-600/10"
                 >
                   CANCEL
                 </Button>
@@ -688,7 +690,7 @@ const Dashboard = () => {
                     !loanFormData.interestRate ||
                     !loanFormData.duration
                   }
-                  className="flex-1 xbox-glow bg-gradient-to-r from-xbox-green to-xbox-green/80 hover:from-xbox-green/90 hover:to-xbox-green text-white font-bold uppercase tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 glass-card bg-gradient-to-r from-blue-600 to-blue-600/80 hover:from-blue-600/90 hover:to-blue-600 text-white font-bold uppercase tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? "PROCESSING..." : "REQUEST LOAN"}
                 </Button>
@@ -701,8 +703,8 @@ const Dashboard = () => {
       {/* Lending Modal (Browse Loans) */}
       {showLendingModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <Card className="xbox-glow border-xbox-green/50 bg-xbox-gray w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <CardHeader className="sticky top-0 bg-xbox-gray border-b border-xbox-green/30 flex flex-row items-center justify-between">
+          <Card className="glass-card border-blue-600/50 bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <CardHeader className="sticky top-0 bg-white border-b border-blue-600/30 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-2xl">AVAILABLE LOANS</CardTitle>
                 <CardDescription className="mt-1">
@@ -711,7 +713,7 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={() => setShowLendingModal(false)}
-                className="p-1 hover:bg-xbox-green/20 rounded transition-colors text-3xl"
+                className="p-1 hover:bg-blue-600/20 rounded transition-colors text-3xl"
               >
                 ×
               </button>
@@ -719,7 +721,7 @@ const Dashboard = () => {
             <CardContent className="pt-6">
               {availableLoans.length === 0 ? (
                 <div className="text-gray-400 text-center py-12">
-                  <Shield className="w-16 h-16 mx-auto mb-4 text-xbox-green/50" />
+                  <Shield className="w-16 h-16 mx-auto mb-4 text-blue-600/50" />
                   <p className="text-lg font-semibold mb-2">
                     No Available Loans
                   </p>
@@ -734,7 +736,7 @@ const Dashboard = () => {
                     return (
                       <Card
                         key={`loan-${loan.id}-${index}`}
-                        className="border-xbox-green/30 bg-xbox-dark"
+                        className="border-blue-600/30 bg-gray-50"
                       >
                         <CardContent className="p-4">
                           <div className="flex justify-between items-start mb-3">
@@ -742,7 +744,7 @@ const Dashboard = () => {
                               <p className="text-sm text-gray-400">
                                 Loan #{loan.id}
                               </p>
-                              <p className="text-2xl font-bold text-xbox-green">
+                              <p className="text-2xl font-bold text-blue-600">
                                 {amountInEth} ETH
                               </p>
                               <p className="text-xs text-gray-500 mt-1">
@@ -766,7 +768,7 @@ const Dashboard = () => {
                               <p
                                 className={`font-semibold ${
                                   loan.riskScore < 30
-                                    ? "text-green-400"
+                                    ? "text-blue-400"
                                     : loan.riskScore < 60
                                     ? "text-yellow-400"
                                     : "text-red-400"
@@ -808,7 +810,7 @@ const Dashboard = () => {
                               }
                             }}
                             disabled={loading || loan.borrower === account}
-                            className="w-full bg-xbox-green hover:bg-xbox-green/80 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-blue-600 hover:bg-blue-600/80 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {loading
                               ? "Processing..."
@@ -831,29 +833,29 @@ const Dashboard = () => {
 };
 
 const StatCard = ({ title, value, hint, icon, valueClass }) => (
-  <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70">
+  <Card className="stat-card">
     <CardHeader className="pb-2">
-      <CardTitle className="text-sm text-gray-400 uppercase tracking-[0.3em]">
+      <CardTitle className="stat-label">
         {title}
       </CardTitle>
     </CardHeader>
     <CardContent>
       <div className="flex items-center justify-between">
         <div
-          className={`text-3xl font-black ${valueClass || "text-xbox-green"}`}
+          className={`stat-value ${valueClass || ""}`}
         >
           {value}
         </div>
         {icon}
       </div>
-      <CardDescription className="mt-2">{hint}</CardDescription>
+      <CardDescription className="mt-2 text-gray-500">{hint}</CardDescription>
     </CardContent>
   </Card>
 );
 
 const EmptyState = ({ message }) => (
-  <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70">
-    <CardContent className="py-10 text-center text-gray-400">
+  <Card className="glass-card">
+    <CardContent className="py-10 text-center text-gray-500">
       {message}
     </CardContent>
   </Card>
@@ -861,7 +863,7 @@ const EmptyState = ({ message }) => (
 
 const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
   const getRiskColor = (score) => {
-    if (score < 30) return "bg-green-900/80 text-green-300";
+    if (score < 30) return "bg-blue-900/80 text-blue-300";
     if (score < 60) return "bg-yellow-900/80 text-yellow-300";
     return "bg-red-900/80 text-red-300";
   };
@@ -882,7 +884,7 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
       case 0:
         return "bg-blue-900/80 text-blue-300";
       case 1:
-        return "bg-green-900/80 text-green-300";
+        return "bg-blue-900/80 text-blue-300";
       case 2:
         return "bg-gray-900/80 text-gray-300";
       case 3:
@@ -906,14 +908,14 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
     transaction.loanId !== undefined ? transaction.loanId.toString() : "N/A";
 
   return (
-    <Card className="xbox-glow-hover border-xbox-green/30 bg-xbox-gray/70 overflow-hidden">
+    <Card className="glass-card border-blue-600/30 bg-white/70 overflow-hidden">
       <CardContent className="pt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           <div className="flex items-start gap-4">
             <div
               className={`w-12 h-12 rounded flex items-center justify-center font-bold ${
                 transaction.type === "lend"
-                  ? "bg-green-900/30 text-green-300"
+                  ? "bg-blue-900/30 text-blue-300"
                   : "bg-red-900/30 text-red-300"
               }`}
             >
@@ -932,7 +934,7 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
             <p className="text-xs font-semibold text-gray-400 uppercase mb-2">
               {transaction.type === "lend" ? "Borrower" : "Lender"}
             </p>
-            <p className="font-mono text-sm font-bold text-xbox-green">
+            <p className="font-mono text-sm font-bold text-blue-600">
               {displayAddress.slice(0, 6)}...{displayAddress.slice(-4)}
             </p>
             <p className="text-xs text-gray-500 mt-1">On-chain identity</p>
@@ -983,11 +985,11 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
             </p>
             <button
               onClick={() => onCopy(displayAddress, loanId)}
-              className="flex items-center gap-2 text-xs text-xbox-green hover:text-xbox-green/80 transition"
+              className="flex items-center gap-2 text-xs text-blue-600 hover:text-blue-600/80 transition"
             >
               <Copy
                 className={`w-3 h-3 ${
-                  copiedKey === loanId ? "text-green-400" : ""
+                  copiedKey === loanId ? "text-blue-400" : ""
                 }`}
               />
               {copiedKey === loanId ? "Copied!" : "Copy address"}
@@ -1000,3 +1002,4 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
 };
 
 export default Dashboard;
+

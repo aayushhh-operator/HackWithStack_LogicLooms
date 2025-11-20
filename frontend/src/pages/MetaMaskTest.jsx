@@ -273,7 +273,7 @@ export default function MetaMaskTest() {
                                 : loan.status === "Funded"
                                 ? "bg-blue-100 text-blue-800"
                                 : loan.status === "Repaid"
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-blue-100 text-blue-800"
                                 : "bg-gray-100 text-gray-800"
                             }`}
                           >
