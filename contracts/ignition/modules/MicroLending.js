@@ -1,4 +1,4 @@
-import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 const MicroLendingModule = buildModule("MicroLendingModule", (m) => {
   const microLending = m.contract("MicroLending");
@@ -6,4 +6,4 @@ const MicroLendingModule = buildModule("MicroLendingModule", (m) => {
   return { microLending };
 });
 
-export default MicroLendingModule;
+module.exports = MicroLendingModule;

@@ -12,6 +12,16 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import {
@@ -36,10 +46,41 @@ const Dashboard = () => {
   const [loans, setLoans] = useState([]);
   const [loading, setLoading] = useState(false);
   const [reputation, setReputation] = useState(0);
+  const [showBorrowModal, setShowBorrowModal] = useState(false);
+  const [showLendingModal, setShowLendingModal] = useState(false);
+  const [availableLoans, setAvailableLoans] = useState([]);
+  const [loanFormData, setLoanFormData] = useState({
+    amount: "",
+    interestRate: "",
+    duration: "",
+    purpose: "",
+  });
   const navigate = useNavigate();
 
   const { account, connectWallet, contract, isConnected } = useWeb3();
-  const { getBorrowerLoans, getLenderLoans, getReputation } = useLoan();
+  const {
+    getBorrowerLoans,
+    getLenderLoans,
+    getReputation,
+    requestLoan,
+    fundLoan,
+  } = useLoan();
+
+  // Chart data for financial overview
+  const chartData = [
+    { month: "Sept 1", lent: 0, borrowed: 0 },
+    { month: "Sept 8", lent: 0, borrowed: 0 },
+    { month: "Sept 15", lent: 0, borrowed: 0 },
+    { month: "Sept 22", lent: 0, borrowed: 0 },
+    { month: "Sept 29", lent: 0, borrowed: 0 },
+    { month: "Oct 6", lent: 0, borrowed: 0 },
+    { month: "Oct 13", lent: 0, borrowed: 0 },
+    { month: "Oct 20", lent: 0, borrowed: 0 },
+    { month: "Oct 27", lent: 0, borrowed: 0 },
+    { month: "Nov 3", lent: 0, borrowed: 0 },
+    { month: "Nov 10", lent: 0, borrowed: 0 },
+    { month: "Nov 19", lent: 0, borrowed: 0 },
+  ];
 
   // Get user data from localStorage
   useEffect(() => {
@@ -81,23 +122,98 @@ const Dashboard = () => {
     }
   };
 
+  // Fetch all available loans for lending (all loans with status = Requested)
+  const fetchAvailableLoans = async () => {
+    if (!contract) return;
+
+    try {
+      const totalLoans = await contract.getTotalLoans();
+      console.log(
+        "🚀 NEW CODE LOADED! Total loans in contract:",
+        Number(totalLoans)
+      );
+      const loans = [];
+
+      // Fetch all loans from contract
+      for (let i = 1; i <= Number(totalLoans); i++) {
+        try {
+          const loan = await contract.getLoan(i);
+          console.log(`Loan ${i} RAW DATA:`, {
+            id: loan[0].toString(),
+            borrower: loan[1],
+            lender: loan[2],
+            amount: loan[3].toString(),
+            interestRate: loan[4].toString(),
+            duration: loan[5].toString(),
+            dueDate: loan[6].toString(),
+            repaidAmount: loan[7].toString(),
+            statusRaw: loan[8].toString(), // FIXED: Status is at index 8!
+            statusNumber: Number(loan[8]),
+            riskScore: loan[9].toString(), // FIXED: Risk score is at index 9!
+            createdAt: loan[10].toString(),
+            purpose: loan[11],
+          });
+          console.log(`Loan ${i}:`, {
+            status: Number(loan[8]), // FIXED: Correct index
+            borrower: loan[1],
+            currentUser: account,
+            isOwnLoan: loan[1].toLowerCase() === account?.toLowerCase(),
+          });
+
+          // Only show loans with status = Requested (0) that aren't from current user
+          if (
+            Number(loan[8]) === 0 &&
+            loan[1].toLowerCase() !== account?.toLowerCase()
+          ) {
+            const loanData = {
+              id: loan[0].toString(),
+              borrower: loan[1],
+              lender: loan[2],
+              amount: loan[3].toString(), // Keep as wei for funding
+              interestRate: Number(loan[4]),
+              duration: Number(loan[5]),
+              dueDate: Number(loan[6]),
+              repaidAmount: loan[7].toString(),
+              status: Number(loan[8]), // FIXED: Correct index
+              riskScore: Number(loan[9]), // FIXED: Correct index
+              createdAt: Number(loan[10]),
+              purpose: loan[11],
+            };
+            console.log("Adding loan to available loans:", loanData);
+            loans.push(loanData);
+          }
+        } catch (err) {
+          console.warn(`Failed to fetch loan ${i}:`, err);
+        }
+      }
+
+      console.log("Available loans found:", loans.length, loans);
+      setAvailableLoans(loans);
+    } catch (error) {
+      console.error("Error fetching available loans:", error);
+    }
+  };
+
   // Auto-fetch loans when connected
   useEffect(() => {
     if (isConnected && account && contract) {
       fetchLoans();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, account, contract]);
 
   const lendingTransactions = loans.filter((t) => t.type === "lend");
   const borrowingTransactions = loans.filter((t) => t.type === "borrow");
 
   const totalLent = lendingTransactions.reduce((sum, t) => {
-    const amount = parseFloat(ethers.formatEther(t.amount || "0"));
+    // t.amount is already formatted as Ether string from getLoan()
+    const amount = parseFloat(t.amount || "0");
     return sum + amount;
   }, 0);
 
   const totalBorrowed = borrowingTransactions.reduce((sum, t) => {
-    const amount = parseFloat(ethers.formatEther(t.amount || "0"));
+    // t.amount is already formatted as Ether string from getLoan()
+    const amount = parseFloat(t.amount || "0");
     return sum + amount;
   }, 0);
 
@@ -189,7 +305,140 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+        {/* New layout with buttons and chart */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-slide-up">
+          {/* Buttons - col 1 */}
+          <div className="flex flex-col gap-4 justify-center lg:col-span-1 min-h-[250px]">
+            <Button
+              onClick={() => setShowBorrowModal(true)}
+              disabled={!isConnected}
+              className="xbox-glow bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold text-lg px-8 py-6 rounded-lg border-2 border-blue-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/50 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Request Loan
+            </Button>
+            <Button
+              onClick={async () => {
+                setShowLendingModal(true);
+                await fetchAvailableLoans();
+              }}
+              disabled={!isConnected}
+              className="xbox-glow bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-500 hover:to-purple-600 text-white font-bold text-lg px-8 py-6 rounded-lg border-2 border-purple-400/50 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/50 w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Browse Loans
+            </Button>
+          </div>
+
+          {/* Graph - col 2&3 (span 2 with more width) */}
+          <div className="lg:col-span-2 min-h-[280px] flex items-center">
+            <Card className="xbox-glow border-xbox-green/30 bg-xbox-gray/70 w-full h-full flex flex-col justify-center">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Financial Overview</CardTitle>
+                <CardDescription>
+                  Lending vs Borrowing Trends (Live Data)
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={250}>
+                  <AreaChart
+                    data={chartData}
+                    margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+                  >
+                    <defs>
+                      <linearGradient
+                        id="colorLent"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#65dc71"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#65dc71"
+                          stopOpacity={0.1}
+                        />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorBorrowed"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="#3b82f6"
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor="#3b82f6"
+                          stopOpacity={0.1}
+                        />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#65dc7125" />
+                    <XAxis
+                      dataKey="month"
+                      stroke="#65dc7166"
+                      tick={{ fontSize: 12 }}
+                    />
+                    <YAxis stroke="#65dc7166" tick={{ fontSize: 12 }} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#181818e6",
+                        border: "2px solid #65dc7180",
+                        borderRadius: "12px",
+                        color: "#65dc71",
+                        boxShadow: "0 0 20px #65dc714d",
+                      }}
+                      formatter={(value) => `${Number(value).toFixed(2)} ETH`}
+                      labelStyle={{ color: "#65dc71" }}
+                    />
+                    <Legend
+                      wrapperStyle={{ color: "#65dc71cc" }}
+                      verticalAlign="top"
+                      height={36}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="lent"
+                      stroke="#65dc71"
+                      strokeWidth={3}
+                      fillOpacity={1}
+                      fill="url(#colorLent)"
+                      name="Amount Lent"
+                      dot={{ fill: "#65dc71cc", r: 4 }}
+                      activeDot={{ r: 6, fill: "#65dc71" }}
+                      isAnimationActive={true}
+                      animationDuration={800}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="borrowed"
+                      stroke="#3b82f6"
+                      strokeWidth={3}
+                      fillOpacity={1}
+                      fill="url(#colorBorrowed)"
+                      name="Amount Borrowed"
+                      dot={{ fill: "#3b82f6cc", r: 4 }}
+                      activeDot={{ r: 6, fill: "#3b82f6" }}
+                      isAnimationActive={true}
+                      animationDuration={800}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Stat cards row - full width */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           <StatCard
             title="Total Lent"
             value={`${totalLent.toFixed(4)} ETH`}
@@ -311,6 +560,272 @@ const Dashboard = () => {
           </Tabs>
         )}
       </div>
+
+      {/* Loan Request Modal */}
+      {showBorrowModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="xbox-glow border-xbox-green/50 bg-xbox-gray w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <CardHeader className="sticky top-0 bg-xbox-gray border-b border-xbox-green/30 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">REQUEST LOAN</CardTitle>
+                <CardDescription className="mt-1">
+                  Enter the details for your loan request
+                </CardDescription>
+              </div>
+              <button
+                onClick={() => setShowBorrowModal(false)}
+                className="p-1 hover:bg-xbox-green/20 rounded transition-colors text-3xl"
+              >
+                ×
+              </button>
+            </CardHeader>
+            <CardContent className="space-y-6 pt-6">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold uppercase tracking-wide text-gray-400">
+                  Amount (ETH)
+                </label>
+                <input
+                  type="number"
+                  value={loanFormData.amount}
+                  onChange={(e) =>
+                    setLoanFormData({ ...loanFormData, amount: e.target.value })
+                  }
+                  placeholder="Enter amount to borrow"
+                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold uppercase tracking-wide text-gray-400">
+                  Interest Rate (%)
+                </label>
+                <input
+                  type="number"
+                  value={loanFormData.interestRate}
+                  onChange={(e) =>
+                    setLoanFormData({
+                      ...loanFormData,
+                      interestRate: e.target.value,
+                    })
+                  }
+                  placeholder="Enter interest rate"
+                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  min="0"
+                  step="0.1"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold uppercase tracking-wide text-gray-400">
+                  Duration (Days)
+                </label>
+                <input
+                  type="number"
+                  value={loanFormData.duration}
+                  onChange={(e) =>
+                    setLoanFormData({
+                      ...loanFormData,
+                      duration: e.target.value,
+                    })
+                  }
+                  placeholder="Enter loan duration"
+                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all"
+                  min="1"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-semibold uppercase tracking-wide text-gray-400">
+                  Purpose
+                </label>
+                <textarea
+                  value={loanFormData.purpose}
+                  onChange={(e) =>
+                    setLoanFormData({
+                      ...loanFormData,
+                      purpose: e.target.value,
+                    })
+                  }
+                  placeholder="Why do you need this loan?"
+                  className="w-full px-4 py-3 bg-xbox-dark border border-xbox-green/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-xbox-green focus:border-transparent transition-all resize-none"
+                  rows={3}
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <Button
+                  onClick={() => setShowBorrowModal(false)}
+                  variant="outline"
+                  className="flex-1 border-xbox-green/30 text-white hover:bg-xbox-green/10"
+                >
+                  CANCEL
+                </Button>
+                <Button
+                  onClick={async () => {
+                    try {
+                      setLoading(true);
+                      await requestLoan(
+                        loanFormData.amount,
+                        loanFormData.interestRate,
+                        loanFormData.duration,
+                        loanFormData.purpose
+                      );
+                      setShowBorrowModal(false);
+                      setLoanFormData({
+                        amount: "",
+                        interestRate: "",
+                        duration: "",
+                        purpose: "",
+                      });
+                      await fetchLoans();
+                    } catch (error) {
+                      console.error("Error requesting loan:", error);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  disabled={
+                    loading ||
+                    !loanFormData.amount ||
+                    !loanFormData.interestRate ||
+                    !loanFormData.duration
+                  }
+                  className="flex-1 xbox-glow bg-gradient-to-r from-xbox-green to-xbox-green/80 hover:from-xbox-green/90 hover:to-xbox-green text-white font-bold uppercase tracking-wide transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "PROCESSING..." : "REQUEST LOAN"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Lending Modal (Browse Loans) */}
+      {showLendingModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <Card className="xbox-glow border-xbox-green/50 bg-xbox-gray w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <CardHeader className="sticky top-0 bg-xbox-gray border-b border-xbox-green/30 flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl">AVAILABLE LOANS</CardTitle>
+                <CardDescription className="mt-1">
+                  Browse and fund loan requests from borrowers
+                </CardDescription>
+              </div>
+              <button
+                onClick={() => setShowLendingModal(false)}
+                className="p-1 hover:bg-xbox-green/20 rounded transition-colors text-3xl"
+              >
+                ×
+              </button>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {availableLoans.length === 0 ? (
+                <div className="text-gray-400 text-center py-12">
+                  <Shield className="w-16 h-16 mx-auto mb-4 text-xbox-green/50" />
+                  <p className="text-lg font-semibold mb-2">
+                    No Available Loans
+                  </p>
+                  <p className="text-sm">
+                    Check back later for new loan requests from other borrowers
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {availableLoans.map((loan, index) => {
+                    const amountInEth = ethers.formatEther(loan.amount);
+                    return (
+                      <Card
+                        key={`loan-${loan.id}-${index}`}
+                        className="border-xbox-green/30 bg-xbox-dark"
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <p className="text-sm text-gray-400">
+                                Loan #{loan.id}
+                              </p>
+                              <p className="text-2xl font-bold text-xbox-green">
+                                {amountInEth} ETH
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Borrower: {loan.borrower.slice(0, 6)}...
+                                {loan.borrower.slice(-4)}
+                              </p>
+                            </div>
+                            <Badge className="bg-blue-900/50 text-blue-300 border-blue-400/50">
+                              REQUESTED
+                            </Badge>
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div>
+                              <p className="text-gray-400">Interest Rate</p>
+                              <p className="text-white font-semibold">
+                                {loan.interestRate / 100}%
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-gray-400">Risk Score</p>
+                              <p
+                                className={`font-semibold ${
+                                  loan.riskScore < 30
+                                    ? "text-green-400"
+                                    : loan.riskScore < 60
+                                    ? "text-yellow-400"
+                                    : "text-red-400"
+                                }`}
+                              >
+                                {loan.riskScore}{" "}
+                                {loan.riskScore < 30
+                                  ? "(Low)"
+                                  : loan.riskScore < 60
+                                  ? "(Medium)"
+                                  : "(High)"}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-sm text-gray-300 mb-4">
+                            <span className="text-gray-500">Purpose:</span>{" "}
+                            {loan.purpose || "No purpose specified"}
+                          </p>
+                          <Button
+                            onClick={async () => {
+                              try {
+                                setLoading(true);
+                                console.log("Funding loan:", {
+                                  loanId: loan.id,
+                                  amount: loan.amount,
+                                });
+                                await fundLoan(loan.id, loan.amount);
+                                setShowLendingModal(false);
+                                await fetchLoans(); // Refresh to show updated status
+                              } catch (error) {
+                                console.error("Error funding loan:", error);
+                                alert(
+                                  `Failed to fund loan: ${
+                                    error.message || "Unknown error"
+                                  }`
+                                );
+                              } finally {
+                                setLoading(false);
+                              }
+                            }}
+                            disabled={loading || loan.borrower === account}
+                            className="w-full bg-xbox-green hover:bg-xbox-green/80 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {loading
+                              ? "Processing..."
+                              : loan.borrower === account
+                              ? "Cannot fund own loan"
+                              : `Fund ${amountInEth} ETH`}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
@@ -377,7 +892,8 @@ const TransactionCard = ({ transaction, onCopy, copiedKey }) => {
     }
   };
 
-  const amount = parseFloat(ethers.formatEther(transaction.amount || "0"));
+  // transaction.amount is already formatted as Ether string from getLoan()
+  const amount = parseFloat(transaction.amount || "0");
   const interestRate = transaction.interestRate
     ? Number(transaction.interestRate) / 100
     : 0;

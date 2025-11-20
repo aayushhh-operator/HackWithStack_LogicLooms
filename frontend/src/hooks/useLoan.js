@@ -71,7 +71,7 @@ export const useLoan = () => {
   };
 
   // Fund a loan
-  const fundLoan = async (loanId, amount) => {
+  const fundLoan = async (loanId, amountInWei) => {
     if (!contract) {
       throw new Error("Contract not initialized. Please connect your wallet.");
     }
@@ -80,14 +80,14 @@ export const useLoan = () => {
     setError(null);
 
     try {
-      const amountWei = ethers.parseEther(amount.toString());
-
+      // amountInWei is already a string in wei format from the contract
       console.log("Funding loan:", {
         loanId: loanId.toString(),
-        amount: amount + " ETH",
+        amountWei: amountInWei,
+        amountEth: ethers.formatEther(amountInWei) + " ETH",
       });
 
-      const tx = await contract.fundLoan(loanId, { value: amountWei });
+      const tx = await contract.fundLoan(loanId, { value: amountInWei });
 
       console.log("Transaction sent:", tx.hash);
       const receipt = await tx.wait();
@@ -177,10 +177,15 @@ export const useLoan = () => {
         duration: Number(loan[5]),
         dueDate: Number(loan[6]),
         repaidAmount: ethers.formatEther(loan[7]),
-        riskScore: Number(loan[8]),
-        status: ["Requested", "Funded", "Repaid", "Defaulted", "Cancelled"][
-          loan[9]
-        ],
+        status: Number(loan[8]), // FIXED: Status is at index 8
+        statusLabel: [
+          "Requested",
+          "Funded",
+          "Repaid",
+          "Defaulted",
+          "Cancelled",
+        ][Number(loan[8])],
+        riskScore: Number(loan[9]), // FIXED: Risk score is at index 9
         createdAt: Number(loan[10]),
         purpose: loan[11],
       };
@@ -198,17 +203,28 @@ export const useLoan = () => {
 
     try {
       const loanIds = await contract.getBorrowerLoans(address);
-      const loans = [];
 
+      // Return empty array if no loans
+      if (!loanIds || loanIds.length === 0) {
+        return [];
+      }
+
+      const loans = [];
       for (let loanId of loanIds) {
-        const loan = await getLoan(loanId);
-        loans.push(loan);
+        try {
+          const loan = await getLoan(loanId);
+          loans.push(loan);
+        } catch (loanErr) {
+          console.warn(`Failed to fetch loan ${loanId}:`, loanErr);
+          // Continue with other loans
+        }
       }
 
       return loans;
     } catch (err) {
       console.error("Error getting borrower loans:", err);
-      throw err;
+      // Return empty array instead of throwing to prevent UI crash
+      return [];
     }
   };
 
@@ -220,17 +236,28 @@ export const useLoan = () => {
 
     try {
       const loanIds = await contract.getLenderLoans(address);
-      const loans = [];
 
+      // Return empty array if no loans
+      if (!loanIds || loanIds.length === 0) {
+        return [];
+      }
+
+      const loans = [];
       for (let loanId of loanIds) {
-        const loan = await getLoan(loanId);
-        loans.push(loan);
+        try {
+          const loan = await getLoan(loanId);
+          loans.push(loan);
+        } catch (loanErr) {
+          console.warn(`Failed to fetch loan ${loanId}:`, loanErr);
+          // Continue with other loans
+        }
       }
 
       return loans;
     } catch (err) {
       console.error("Error getting lender loans:", err);
-      throw err;
+      // Return empty array instead of throwing to prevent UI crash
+      return [];
     }
   };
 
@@ -260,7 +287,8 @@ export const useLoan = () => {
       return Number(reputation);
     } catch (err) {
       console.error("Error getting reputation:", err);
-      throw err;
+      // Return 0 instead of throwing to prevent UI crash
+      return 0;
     }
   };
 
@@ -274,6 +302,7 @@ export const useLoan = () => {
     getLenderLoans,
     calculateRepayment,
     getUserReputation,
+    getReputation: getUserReputation, // Alias for compatibility
     loading,
     error,
   };

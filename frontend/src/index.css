@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
@@ -11,14 +11,19 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: #0D0D0D;
+  font-family: "Inter", sans-serif;
+  background: #0d0d0d;
   color: #ffffff;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Orbitron', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Orbitron", sans-serif;
 }
 
 /* Custom scrollbar */
@@ -27,40 +32,43 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1A1A;
+  background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #107C10;
+  background: #107c10;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0E7A0E;
+  background: #0e7a0e;
 }
 
 /* Glow effects */
 .glow-text {
   animation: pulse-glow 3s ease-in-out infinite;
-  text-shadow: 0 0 10px #107C10, 0 0 20px #107C10, 0 0 30px #107C10;
+  text-shadow: 0 0 10px #107c10, 0 0 20px #107c10, 0 0 30px #107c10;
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(16, 124, 16, 0.5), 0 0 20px rgba(16, 124, 16, 0.3);
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(16, 124, 16, 0.5),
+      0 0 20px rgba(16, 124, 16, 0.3);
   }
   50% {
-    text-shadow: 0 0 20px rgba(16, 124, 16, 0.8), 0 0 30px rgba(16, 124, 16, 0.5);
+    text-shadow: 0 0 20px rgba(16, 124, 16, 0.8),
+      0 0 30px rgba(16, 124, 16, 0.5);
   }
 }
 
 .glow-border {
-  box-shadow: 0 0 10px #107C10, inset 0 0 10px rgba(16, 124, 16, 0.2);
+  box-shadow: 0 0 10px #107c10, inset 0 0 10px rgba(16, 124, 16, 0.2);
 }
 
 /* Animated background */
 .animated-bg {
-  background: linear-gradient(-45deg, #0D0D0D, #1A1A1A, #0A5F0A, #0D0D0D);
+  background: linear-gradient(-45deg, #0d0d0d, #1a1a1a, #0a5f0a, #0d0d0d);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
 }
@@ -82,14 +90,15 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: #107C10;
+  background: #107c10;
   border-radius: 50%;
   animation: float 6s ease-in-out infinite;
   opacity: 0.6;
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
     opacity: 0;
   }
@@ -128,19 +137,22 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Xbox glow utility classes */
 .xbox-glow {
-  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4), inset 0 0 10px rgba(16, 124, 16, 0.1);
+  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4),
+    inset 0 0 10px rgba(16, 124, 16, 0.1);
 }
 
 .xbox-glow-hover {
   transition: all 0.3s ease;
-  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4), inset 0 0 10px rgba(16, 124, 16, 0.1);
+  box-shadow: 0 0 20px rgba(16, 124, 16, 0.4),
+    inset 0 0 10px rgba(16, 124, 16, 0.1);
 }
 
 .xbox-glow-hover:hover {
-  box-shadow: 0 0 40px rgba(16, 124, 16, 0.6), inset 0 0 15px rgba(16, 124, 16, 0.2);
+  box-shadow: 0 0 40px rgba(16, 124, 16, 0.6),
+    inset 0 0 15px rgba(16, 124, 16, 0.2);
 }
 
 .text-glow {
-  color: #107C10;
+  color: #107c10;
   text-shadow: 0 0 8px rgba(16, 124, 16, 0.5);
 }

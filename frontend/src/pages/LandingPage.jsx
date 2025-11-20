@@ -1,37 +1,45 @@
-import { useEffect, useState } from 'react'
-import { ChevronRight, Zap, Shield, TrendingUp, Wallet, Lock, ArrowRight } from 'lucide-react'
-import { Button } from '../components/ui/button'
-import AuthModal from '../components/auth-modal'
-import UserProfile from '../components/user-profile'
+import {
+  ArrowRight,
+  ChevronRight,
+  Lock,
+  Shield,
+  TrendingUp,
+  Wallet,
+  Zap,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import AuthModal from "../components/auth-modal";
+import { Button } from "../components/ui/button";
+import UserProfile from "../components/user-profile";
 
 const LandingPage = () => {
-  const [hoveredFeature, setHoveredFeature] = useState(null)
-  const [isAuthOpen, setIsAuthOpen] = useState(false)
-  const [user, setUser] = useState(null)
+  const [hoveredFeature, setHoveredFeature] = useState(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('logiclooms:user')
+    const storedUser = localStorage.getItem("logiclooms:user");
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser))
+        setUser(JSON.parse(storedUser));
       } catch {
-        localStorage.removeItem('logiclooms:user')
+        localStorage.removeItem("logiclooms:user");
       }
     }
-  }, [])
+  }, []);
 
   const handleAuthSuccess = (userData) => {
     // userData is the full user object from the API response
-    setUser(userData)
-    localStorage.setItem('logiclooms:user', JSON.stringify(userData))
-    setIsAuthOpen(false)
-  }
+    setUser(userData);
+    localStorage.setItem("logiclooms:user", JSON.stringify(userData));
+    setIsAuthOpen(false);
+  };
 
   const handleLogout = () => {
-    setUser(null)
-    localStorage.removeItem('logiclooms:user')
-    localStorage.removeItem('logiclooms:token')
-  }
+    setUser(null);
+    localStorage.removeItem("logiclooms:user");
+    localStorage.removeItem("logiclooms:token");
+  };
 
   return (
     <div className="scanlines min-h-screen bg-xbox-dark text-white overflow-hidden">
@@ -52,18 +60,32 @@ const LandingPage = () => {
             <span className="font-bold text-lg glow-text">LOANX</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm hover:text-xbox-green transition">
+            <a
+              href="#features"
+              className="text-sm hover:text-xbox-green transition"
+            >
               FEATURES
             </a>
-            <a href="#how-it-works" className="text-sm hover:text-xbox-green transition">
+            <a
+              href="#how-it-works"
+              className="text-sm hover:text-xbox-green transition"
+            >
               HOW IT WORKS
             </a>
-            <a href="#stats" className="text-sm hover:text-xbox-green transition">
+            <a
+              href="#stats"
+              className="text-sm hover:text-xbox-green transition"
+            >
               IMPACT
             </a>
           </div>
           {user ? (
-            <UserProfile name={user.name} email={user.email} role={user.role} onLogout={handleLogout} />
+            <UserProfile
+              name={user.name}
+              email={user.email}
+              role={user.role}
+              onLogout={handleLogout}
+            />
           ) : (
             <Button
               onClick={() => setIsAuthOpen(true)}
@@ -84,8 +106,8 @@ const LandingPage = () => {
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(16, 124, 16, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.1) 1px, transparent 1px)',
-              backgroundSize: '40px 40px',
+                "linear-gradient(rgba(16, 124, 16, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.1) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
             }}
           />
         </div>
@@ -95,7 +117,7 @@ const LandingPage = () => {
             <div>
               <div className="inline-block mb-6 px-4 py-2 bg-xbox-green/10 border border-xbox-green rounded-sm">
                 <span className="text-xbox-green text-sm font-mono">
-                  {'<ACCESS_UNLIMITED />'}
+                  {"<ACCESS_UNLIMITED />"}
                 </span>
               </div>
               <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6 glow-text">
@@ -104,22 +126,25 @@ const LandingPage = () => {
                 <span className="text-xbox-green">REIMAGINED</span>
               </h1>
               <p className="text-lg text-gray-300 mb-8 leading-relaxed max-w-sm">
-                Millions shut out from traditional banking. We're breaking down barriers with
-                AI-powered risk assessment and blockchain security. Your credit history doesn't
-                define you—your potential does.
+                Millions shut out from traditional banking. We're breaking down
+                barriers with AI-powered risk assessment and blockchain
+                security. Your credit history doesn't define you—your potential
+                does.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
                   className="bg-xbox-green text-white hover:bg-xbox-green-light rounded-sm font-bold"
+                  onClick={() => setIsAuthOpen(true)}
                 >
                   GET FUNDED NOW <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-xbox-green text-xbox-green hover:bg-xbox-green/5 rounded-sm font-bold"
+                  className="border-xbox-green text-xbox-green hover:bg-xbox-green/5 rounded-sm font-bold opacity-50 cursor-not-allowed"
+                  disabled
                 >
                   WATCH DEMO
                 </Button>
@@ -131,14 +156,22 @@ const LandingPage = () => {
               <div className="relative">
                 {/* Floating cards with data */}
                 <div className="absolute top-0 left-0 bg-xbox-gray border border-xbox-green/30 p-4 rounded-sm shadow-lg backdrop-blur max-w-xs transform -rotate-12 hover:rotate-0 transition duration-300">
-                  <div className="text-xbox-green text-sm font-mono mb-2">AI_RISK_SCORE</div>
+                  <div className="text-xbox-green text-sm font-mono mb-2">
+                    AI_RISK_SCORE
+                  </div>
                   <div className="text-3xl font-black text-white">8.7/10</div>
-                  <div className="text-xs text-gray-400 mt-2">Smart Assessment</div>
+                  <div className="text-xs text-gray-400 mt-2">
+                    Smart Assessment
+                  </div>
                 </div>
                 <div className="absolute bottom-0 right-0 bg-xbox-gray border border-xbox-green/30 p-4 rounded-sm shadow-lg backdrop-blur max-w-xs transform rotate-12 hover:rotate-0 transition duration-300">
-                  <div className="text-xbox-green text-sm font-mono mb-2">ETHEREUM_ESCROW</div>
+                  <div className="text-xbox-green text-sm font-mono mb-2">
+                    ETHEREUM_ESCROW
+                  </div>
                   <div className="text-2xl font-black text-white">$2.4M</div>
-                  <div className="text-xs text-gray-400 mt-2">Locked & Secure</div>
+                  <div className="text-xs text-gray-400 mt-2">
+                    Locked & Secure
+                  </div>
                 </div>
               </div>
             </div>
@@ -147,7 +180,10 @@ const LandingPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section id="stats" className="py-16 px-4 bg-xbox-gray/50 border-y border-xbox-green/20">
+      <section
+        id="stats"
+        className="py-16 px-4 bg-xbox-gray/50 border-y border-xbox-green/20"
+      >
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -182,51 +218,52 @@ const LandingPage = () => {
       <section id="features" className="py-20 px-4 relative">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-black mb-16 text-center">
-            POWER-UP YOUR <span className="text-xbox-green">FINANCIAL</span> GAME
+            POWER-UP YOUR <span className="text-xbox-green">FINANCIAL</span>{" "}
+            GAME
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: Shield,
-                title: 'ETHEREUM ESCROW',
+                title: "ETHEREUM ESCROW",
                 description:
-                  'Blockchain-verified transactions. Your money, cryptographically secured. No middlemen, no delays.',
-                stats: '$0 - $50K',
+                  "Blockchain-verified transactions. Your money, cryptographically secured. No middlemen, no delays.",
+                stats: "$0 - $50K",
               },
               {
                 icon: Zap,
-                title: 'AI RISK RATING',
+                title: "AI RISK RATING",
                 description:
-                  'Neural networks analyze 500+ data points. Better decisions than humans. Approved in 60 seconds.',
-                stats: 'Real-time',
+                  "Neural networks analyze 500+ data points. Better decisions than humans. Approved in 60 seconds.",
+                stats: "Real-time",
               },
               {
                 icon: TrendingUp,
-                title: 'DYNAMIC RATES',
+                title: "DYNAMIC RATES",
                 description:
-                  'Your rate adjusts as you build credit. Better behavior = better rates. Automatic rewards.',
-                stats: '5-24% APR',
+                  "Your rate adjusts as you build credit. Better behavior = better rates. Automatic rewards.",
+                stats: "5-24% APR",
               },
               {
                 icon: Wallet,
-                title: 'INSTANT PAYOUTS',
+                title: "INSTANT PAYOUTS",
                 description:
-                  'Funds hit your wallet instantly. Stablecoin or fiat. No waiting, no gatekeepers.',
-                stats: '< 30 seconds',
+                  "Funds hit your wallet instantly. Stablecoin or fiat. No waiting, no gatekeepers.",
+                stats: "< 30 seconds",
               },
               {
                 icon: Lock,
-                title: 'ZERO DEFAULTS',
+                title: "ZERO DEFAULTS",
                 description:
-                  'Smart contracts auto-execute. Non-repayment = automatic collateral liquidation.',
-                stats: 'Guaranteed',
+                  "Smart contracts auto-execute. Non-repayment = automatic collateral liquidation.",
+                stats: "Guaranteed",
               },
               {
                 icon: Zap,
-                title: 'SOCIAL CREDIT',
+                title: "SOCIAL CREDIT",
                 description:
-                  'Build your credit history. Peer vouching boosts your score. Community-powered lending.',
-                stats: 'Decentralized',
+                  "Build your credit history. Peer vouching boosts your score. Community-powered lending.",
+                stats: "Decentralized",
               },
             ].map((feature, index) => (
               <div
@@ -235,8 +272,8 @@ const LandingPage = () => {
                 onMouseLeave={() => setHoveredFeature(null)}
                 className={`group relative bg-xbox-gray border-2 p-6 rounded-sm cursor-pointer transition-all duration-300 ${
                   hoveredFeature === index
-                    ? 'border-xbox-green shadow-lg shadow-xbox-green/50 scale-105'
-                    : 'border-xbox-green/20 hover:border-xbox-green/50'
+                    ? "border-xbox-green shadow-lg shadow-xbox-green/50 scale-105"
+                    : "border-xbox-green/20 hover:border-xbox-green/50"
                 }`}
               >
                 {/* Background glow on hover */}
@@ -247,23 +284,27 @@ const LandingPage = () => {
                   <div
                     className={`w-12 h-12 mb-4 flex items-center justify-center rounded-sm ${
                       hoveredFeature === index
-                        ? 'bg-xbox-green text-white'
-                        : 'bg-xbox-green/20 text-xbox-green'
+                        ? "bg-xbox-green text-white"
+                        : "bg-xbox-green/20 text-xbox-green"
                     }`}
                   >
                     <feature.icon className="w-6 h-6" />
                   </div>
 
-                  <h3 className="text-lg font-black mb-2 text-white">{feature.title}</h3>
+                  <h3 className="text-lg font-black mb-2 text-white">
+                    {feature.title}
+                  </h3>
                   <p className="text-sm text-gray-300 mb-4 leading-relaxed">
                     {feature.description}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono text-xbox-green">{feature.stats}</span>
+                    <span className="text-xs font-mono text-xbox-green">
+                      {feature.stats}
+                    </span>
                     <ChevronRight
                       className={`w-4 h-4 transition-transform ${
-                        hoveredFeature === index ? 'translate-x-2' : ''
+                        hoveredFeature === index ? "translate-x-2" : ""
                       }`}
                     />
                   </div>
@@ -281,34 +322,39 @@ const LandingPage = () => {
       >
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-black mb-16 text-center">
-            THREE STEPS TO <span className="text-xbox-green">FINANCIAL FREEDOM</span>
+            THREE STEPS TO{" "}
+            <span className="text-xbox-green">FINANCIAL FREEDOM</span>
           </h2>
           <div className="grid md:grid-cols-3 gap-8 relative">
             {/* Connection lines */}
             <div className="hidden md:block absolute top-32 left-1/3 right-1/3 h-1 bg-gradient-to-r from-transparent via-xbox-green to-transparent" />
             {[
               {
-                num: '01',
-                title: 'CONNECT',
-                desc: 'Link your identity. Instant verification. No docs.',
+                num: "01",
+                title: "CONNECT",
+                desc: "Link your identity. Instant verification. No docs.",
               },
               {
-                num: '02',
-                title: 'AI SCORES',
-                desc: 'Machine learning analyzes your potential instantly.',
+                num: "02",
+                title: "AI SCORES",
+                desc: "Machine learning analyzes your potential instantly.",
               },
               {
-                num: '03',
-                title: 'BORROW & BUILD',
-                desc: 'Get funded. Repay. Build your credit history.',
+                num: "03",
+                title: "BORROW & BUILD",
+                desc: "Get funded. Repay. Build your credit history.",
               },
             ].map((step, index) => (
               <div key={index} className="relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-xbox-green rounded-full flex items-center justify-center">
-                  <span className="text-2xl font-black text-white">{step.num}</span>
+                  <span className="text-2xl font-black text-white">
+                    {step.num}
+                  </span>
                 </div>
                 <div className="pt-16 text-center">
-                  <h3 className="text-xl font-black mb-3 text-white">{step.title}</h3>
+                  <h3 className="text-xl font-black mb-3 text-white">
+                    {step.title}
+                  </h3>
                   <p className="text-sm text-gray-300">{step.desc}</p>
                 </div>
               </div>
@@ -324,27 +370,30 @@ const LandingPage = () => {
             className="absolute inset-0"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(16, 124, 16, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.1) 1px, transparent 1px)',
-              backgroundSize: '60px 60px',
+                "linear-gradient(rgba(16, 124, 16, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.1) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
             }}
           />
         </div>
         <div className="max-w-4xl mx-auto relative z-10 text-center">
           <div className="inline-block mb-6 px-4 py-2 bg-xbox-green/10 border border-xbox-green rounded-sm">
             <span className="text-xbox-green text-sm font-mono">
-              {'<JOIN_REVOLUTION />'}
+              {"<JOIN_REVOLUTION />"}
             </span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black mb-6 glow-text">READY TO LEVEL UP?</h2>
+          <h2 className="text-4xl md:text-6xl font-black mb-6 glow-text">
+            READY TO LEVEL UP?
+          </h2>
           <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join millions of borrowers breaking free from traditional banking constraints. Your
-            AI-powered path to financial inclusion starts now.
+            Join millions of borrowers breaking free from traditional banking
+            constraints. Your AI-powered path to financial inclusion starts now.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               className="bg-xbox-green text-white hover:bg-xbox-green-light rounded-sm font-bold text-base h-12 px-8"
+              onClick={() => setIsAuthOpen(true)}
             >
               START BORROWING <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
@@ -352,6 +401,7 @@ const LandingPage = () => {
               size="lg"
               variant="outline"
               className="border-2 border-xbox-green text-xbox-green hover:bg-xbox-green/10 rounded-sm font-bold text-base h-12 px-8"
+              onClick={() => setIsAuthOpen(true)}
             >
               BECOME A LENDER
             </Button>
@@ -455,7 +505,7 @@ const LandingPage = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default LandingPage
+export default LandingPage;

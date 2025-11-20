@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { createContext, useContext, useEffect, useState } from "react";
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from "../contracts/config";
+import { CONTRACT_ABI, CONTRACT_ADDRESS, NETWORK_CONFIG } from "../contracts/config";
 
 const Web3Context = createContext();
 
@@ -25,10 +25,27 @@ export const Web3Provider = ({ children }) => {
 
       // Request account access
       const browserProvider = new ethers.BrowserProvider(window.ethereum);
+      
+      // Check network but don't force switch to avoid connection issues
+      const network = await browserProvider.getNetwork();
+      console.log("Current Chain ID:", network.chainId);
+      const targetChainId = BigInt(NETWORK_CONFIG.chainId);
+      
+      if (network.chainId !== targetChainId) {
+        console.warn("Wrong network! Please switch to Hardhat Local (Chain ID 31337)");
+        alert("Please switch your wallet to the Hardhat Local network (Chain ID 31337)");
+      }
+
       const accounts = await browserProvider.send("eth_requestAccounts", []);
       const signer = await browserProvider.getSigner();
 
       // Create contract instance
+      console.log("Initializing contract with:", {
+        address: CONTRACT_ADDRESS,
+        abiLength: CONTRACT_ABI?.length,
+        signer: signer?.address
+      });
+
       const contractInstance = new ethers.Contract(
         CONTRACT_ADDRESS,
         CONTRACT_ABI,
@@ -84,7 +101,7 @@ export const Web3Provider = ({ children }) => {
   // Auto-connect if previously connected
   useEffect(() => {
     const checkConnection = async () => {
-      if (window.ethereum) {
+      if (window.ethereum && !account) {
         try {
           const browserProvider = new ethers.BrowserProvider(window.ethereum);
           const accounts = await browserProvider.send("eth_accounts", []);
@@ -98,6 +115,7 @@ export const Web3Provider = ({ children }) => {
     };
 
     checkConnection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const value = {
