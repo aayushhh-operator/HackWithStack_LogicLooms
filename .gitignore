@@ -110,7 +110,7 @@ Thumbs.db
 ignition/deployments/chain-*/
 
 # TypeScript
-*.tsbuildinfo
+*.tsbuildinfocrea
 
 # Vite
 .vite/
@@ -118,4 +118,4 @@ ignition/deployments/chain-*/
 # Local blockchain data
 data/
 
-MDs/*
+MDs/Extras
