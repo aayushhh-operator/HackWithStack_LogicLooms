@@ -1,4 +1,4 @@
-# LoanX - Smart Micro-Lending Frontend
+# MicroLend - Smart Micro-Lending Frontend
 
 A modern, Xbox-themed frontend for the Smart Micro-Lending System with AI Risk Rating and Ethereum Escrow.
 

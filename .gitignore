@@ -1,4 +1,4 @@
-# Root .gitignore for LoanX DApp
+# Root .gitignore for MicroLend DApp
 
 # Dependencies
 node_modules/

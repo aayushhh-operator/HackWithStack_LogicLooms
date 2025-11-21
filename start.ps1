@@ -1,11 +1,11 @@
-# 🚀 LoanX - Complete Startup Guide
+# 🚀 MicroLend - Complete Startup Guide
 
 Write-Host "================================" -ForegroundColor Cyan
-Write-Host "  LoanX DApp Startup Script" -ForegroundColor Green
+Write-Host "  MicroLend DApp Startup Script" -ForegroundColor Green
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "This script will help you start all components of the LoanX DApp" -ForegroundColor Yellow
+Write-Host "This script will help you start all components of the MicroLend DApp" -ForegroundColor Yellow
 Write-Host ""
 
 Write-Host "You need to run these in SEPARATE terminals:" -ForegroundColor Yellow

@@ -57,7 +57,7 @@ const LandingPage = () => {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <Zap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg text-black">LOANX</span>
+            <span className="font-bold text-lg text-black">MICROLEND</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a
@@ -207,8 +207,7 @@ const LandingPage = () => {
       <section id="features" className="py-20 px-4 relative">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-black mb-16 text-center text-black">
-            POWER-UP YOUR <span className="text-blue-600">FINANCIAL</span>{" "}
-            GAME
+            POWER-UP YOUR <span className="text-blue-600">FINANCIAL</span> GAME
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
@@ -396,7 +395,10 @@ const LandingPage = () => {
               <h4 className="font-bold mb-4 text-blue-600">PRODUCT</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>
-                  <a href="#features" className="hover:text-blue-600 transition">
+                  <a
+                    href="#features"
+                    className="hover:text-blue-600 transition"
+                  >
                     Features
                   </a>
                 </li>
@@ -475,7 +477,7 @@ const LandingPage = () => {
           </div>
 
           <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-gray-600">
-            <div>© 2025 LoanX. All rights reserved.</div>
+            <div>© 2025 MicroLend. All rights reserved.</div>
             <div className="flex items-center gap-2 mt-4 md:mt-0">
               <Lock className="w-4 h-4" />
               <span>Ethereum Powered • AI Secured</span>

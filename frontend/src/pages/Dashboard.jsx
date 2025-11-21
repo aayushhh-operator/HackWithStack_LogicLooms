@@ -248,7 +248,7 @@ const Dashboard = () => {
               <p className="text-xs text-gray-500 uppercase tracking-wider">
                 Dashboard
               </p>
-              <h1 className="text-2xl font-bold text-black">LOANX</h1>
+              <h1 className="text-2xl font-bold text-black">MICROLEND</h1>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -294,7 +294,7 @@ const Dashboard = () => {
         <div className="mb-8 space-y-2">
           <div className="flex items-center gap-3">
             <div className="text-4xl font-bold text-black">
-              {user ? `Welcome, ${user.name}` : "LOANX ARENA"}
+              {user ? `Welcome, ${user.name}` : "MICROLEND ARENA"}
             </div>
           </div>
           <p className="text-sm text-gray-500">

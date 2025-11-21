@@ -1,59 +1,59 @@
-import { useState } from 'react'
-import { ArrowRight, Lock, Mail, Eye, EyeOff, User, Phone } from 'lucide-react'
-import { Button } from './ui/button'
+import { ArrowRight, Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = "http://localhost:5000/api";
 
 const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
-  const [mode, setMode] = useState('login')
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [mode, setMode] = useState("login");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
 
     // Validation
-    if (mode === 'signup') {
+    if (mode === "signup") {
       if (!name || !email || !phone || !password) {
-        setError('All fields are required')
-        setIsLoading(false)
-        return
+        setError("All fields are required");
+        setIsLoading(false);
+        return;
       }
       if (password !== confirmPassword) {
-        setError('Passwords do not match')
-        setIsLoading(false)
-        return
+        setError("Passwords do not match");
+        setIsLoading(false);
+        return;
       }
       if (password.length < 8) {
-        setError('Password must be at least 8 characters')
-        setIsLoading(false)
-        return
+        setError("Password must be at least 8 characters");
+        setIsLoading(false);
+        return;
       }
     } else {
       if (!email || !password) {
-        setError('Email and password required')
-        setIsLoading(false)
-        return
+        setError("Email and password required");
+        setIsLoading(false);
+        return;
       }
     }
 
     try {
-      if (mode === 'signup') {
+      if (mode === "signup") {
         // Signup API call
         const response = await fetch(`${API_URL}/signup`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name,
@@ -61,69 +61,69 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             phone,
             password,
           }),
-        })
+        });
 
-        const data = await response.json()
+        const data = await response.json();
 
         if (!response.ok) {
-          setError(data.error || 'Signup failed')
-          setIsLoading(false)
-          return
+          setError(data.error || "Signup failed");
+          setIsLoading(false);
+          return;
         }
 
         // Store user data and token
-        localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
-        localStorage.setItem('logiclooms:token', data.user.token)
+        localStorage.setItem("logiclooms:user", JSON.stringify(data.user));
+        localStorage.setItem("logiclooms:token", data.user.token);
 
         // Call success handler with full user data
-        onAuthSuccess(data.user)
-        setIsLoading(false)
+        onAuthSuccess(data.user);
+        setIsLoading(false);
 
         // Reset form
-        setName('')
-        setEmail('')
-        setPhone('')
-        setPassword('')
-        setConfirmPassword('')
-        setMode('login')
+        setName("");
+        setEmail("");
+        setPhone("");
+        setPassword("");
+        setConfirmPassword("");
+        setMode("login");
       } else {
         // Login API call
         const response = await fetch(`${API_URL}/login`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email,
             password,
           }),
-        })
+        });
 
-        const data = await response.json()
+        const data = await response.json();
 
         if (!response.ok) {
-          setError(data.error || 'Login failed')
-          setIsLoading(false)
-          return
+          setError(data.error || "Login failed");
+          setIsLoading(false);
+          return;
         }
 
         // Store user data and token
-        localStorage.setItem('logiclooms:user', JSON.stringify(data.user))
-        localStorage.setItem('logiclooms:token', data.user.token)
+        localStorage.setItem("logiclooms:user", JSON.stringify(data.user));
+        localStorage.setItem("logiclooms:token", data.user.token);
 
         // Call success handler with full user data
-        onAuthSuccess(data.user)
-        setIsLoading(false)
+        onAuthSuccess(data.user);
+        setIsLoading(false);
 
         // Reset form
-        setEmail('')
-        setPassword('')
+        setEmail("");
+        setPassword("");
       }
     } catch (err) {
-      setError('Network error. Please try again.')
-      setIsLoading(false)
+      setError("Network error. Please try again.");
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -132,8 +132,8 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(16, 124, 16, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.05) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+            "linear-gradient(rgba(16, 124, 16, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 124, 16, 0.05) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
         }}
       />
 
@@ -150,23 +150,23 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
         <div className="mb-8">
           <div className="inline-block mb-4 px-3 py-1 bg-xbox-green/10 border border-xbox-green rounded-sm">
             <span className="text-xbox-green text-xs font-mono">
-              {'<AUTHENTICATE />'}
+              {"<AUTHENTICATE />"}
             </span>
           </div>
           <h2 className="text-3xl font-black text-white mb-2">
-            {mode === 'login' ? 'LOGIN' : 'JOIN'}
+            {mode === "login" ? "LOGIN" : "JOIN"}
           </h2>
           <p className="text-sm text-gray-400">
-            {mode === 'login'
-              ? 'Access your lending account'
-              : 'Start your journey today'}
+            {mode === "login"
+              ? "Access your lending account"
+              : "Start your journey today"}
           </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name (Signup only) */}
-          {mode === 'signup' && (
+          {mode === "signup" && (
             <div>
               <label className="block text-sm font-bold text-white mb-2">
                 FULL NAME
@@ -204,7 +204,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
           </div>
 
           {/* Phone (Signup only) */}
-          {mode === 'signup' && (
+          {mode === "signup" && (
             <div>
               <label className="block text-sm font-bold text-white mb-2">
                 PHONE NUMBER
@@ -234,7 +234,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             <div className="relative">
               <Lock className="absolute left-3 top-3 w-5 h-5 text-xbox-green/50" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
@@ -245,13 +245,17 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-3 text-xbox-green/50 hover:text-xbox-green transition"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
 
           {/* Confirm Password (Signup only) */}
-          {mode === 'signup' && (
+          {mode === "signup" && (
             <div>
               <label className="block text-sm font-bold text-white mb-2">
                 CONFIRM PASSWORD
@@ -259,7 +263,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
               <div className="relative">
                 <Lock className="absolute left-3 top-3 w-5 h-5 text-xbox-green/50" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
@@ -283,10 +287,10 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             className="w-full bg-xbox-green text-white hover:bg-xbox-green-light rounded-sm font-bold mt-6"
           >
             {isLoading ? (
-              'PROCESSING...'
+              "PROCESSING..."
             ) : (
               <>
-                {mode === 'login' ? 'LOGIN NOW' : 'CREATE ACCOUNT'}
+                {mode === "login" ? "LOGIN NOW" : "CREATE ACCOUNT"}
                 <ArrowRight className="w-4 h-4 ml-2" />
               </>
             )}
@@ -295,19 +299,19 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
 
         {/* Mode Toggle */}
         <div className="mt-6 text-center text-sm text-gray-400">
-          {mode === 'login' ? (
+          {mode === "login" ? (
             <>
-              New to LoanX?{' '}
+              New to MicroLend?{" "}
               <button
                 type="button"
                 onClick={() => {
-                  setMode('signup')
-                  setError('')
-                  setName('')
-                  setEmail('')
-                  setPhone('')
-                  setPassword('')
-                  setConfirmPassword('')
+                  setMode("signup");
+                  setError("");
+                  setName("");
+                  setEmail("");
+                  setPhone("");
+                  setPassword("");
+                  setConfirmPassword("");
                   // setUserType('borrower') // REMOVE THIS LINE
                 }}
                 className="text-xbox-green font-bold hover:underline"
@@ -317,17 +321,17 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             </>
           ) : (
             <>
-              Already have an account?{' '}
+              Already have an account?{" "}
               <button
                 type="button"
                 onClick={() => {
-                  setMode('login')
-                  setError('')
-                  setName('')
-                  setEmail('')
-                  setPhone('')
-                  setPassword('')
-                  setConfirmPassword('')
+                  setMode("login");
+                  setError("");
+                  setName("");
+                  setEmail("");
+                  setPhone("");
+                  setPassword("");
+                  setConfirmPassword("");
                   // setUserType('borrower') // REMOVE THIS LINE
                 }}
                 className="text-xbox-green font-bold hover:underline"
@@ -345,7 +349,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AuthModal
+export default AuthModal;
