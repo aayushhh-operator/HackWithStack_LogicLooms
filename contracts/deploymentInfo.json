@@ -1,0 +1,6 @@
+{
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "network": "hardhatMainnet",
+  "deployedAt": "2025-11-18T00:00:00.000Z",
+  "note": "This is a temporary in-process deployment. For persistent deployment, use a long-running hardhat node."
+}

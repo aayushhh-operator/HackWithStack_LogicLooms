@@ -1,0 +1,78 @@
+# Contracts .gitignore (Hardhat)
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Hardhat files
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Hardhat Ignition deployments for local node (chain-1337)
+ignition/deployments/chain-1337/
+
+# Keep the main deployment info but ignore local chain
+# deploymentInfo.json (uncomment to ignore this file)
+
+# Compilation output
+/dist
+/bundle
+
+# Environment variables
+.env
+.env.local
+.env.production
+*.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Coverage
+coverage/
+coverage.json
+*.lcov
+.nyc_output/
+
+# Hardhat specific
+.openzeppelin/
+
+# TypeScript
+*.tsbuildinfo
+build/
+
+# Solidity compiler output
+*.abi
+*.bin
+
+# Gas reports
+gas-report.txt
+gasReporterOutput.json
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Temp files
+*.tmp
+*.temp
+
+# Tests
+.testmondata

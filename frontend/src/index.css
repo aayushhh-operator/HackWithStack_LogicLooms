@@ -1,0 +1,444 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #0d0d0d;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4169E1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3557c9;
+}
+
+/* Glow effects */
+.glow-text {
+  animation: pulse-glow 3s ease-in-out infinite;
+  text-shadow: 0 0 10px #4169E1, 0 0 20px #4169E1, 0 0 30px #4169E1;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(65, 105, 225, 0.5),
+      0 0 20px rgba(65, 105, 225, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(65, 105, 225, 0.8),
+      0 0 30px rgba(65, 105, 225, 0.5);
+  }
+}
+
+.glow-border {
+  box-shadow: 0 0 10px #4169E1, inset 0 0 10px rgba(65, 105, 225, 0.2);
+}
+
+/* Animated background */
+.animated-bg {
+  background: linear-gradient(-45deg, #0d0d0d, #1a1a1a, #3557c9, #0d0d0d);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Particle effect */
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #4169E1;
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* Scanlines effect */
+@keyframes scan-lines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+.scanlines {
+  animation: scan-lines 8s linear infinite;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(65, 105, 225, 0.03) 0px,
+    rgba(65, 105, 225, 0.03) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* Xbox glow utility classes */
+.xbox-glow {
+  box-shadow: 0 0 20px rgba(65, 105, 225, 0.4),
+    inset 0 0 10px rgba(65, 105, 225, 0.1);
+}
+
+.xbox-glow-hover {
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(65, 105, 225, 0.4),
+    inset 0 0 10px rgba(65, 105, 225, 0.1);
+}
+
+.xbox-glow-hover:hover {
+  box-shadow: 0 0 40px rgba(65, 105, 225, 0.6),
+    inset 0 0 15px rgba(65, 105, 225, 0.2);
+}
+
+.text-glow {
+  color: #4169E1;
+  text-shadow: 0 0 8px rgba(65, 105, 225, 0.5);
+}
+
+/* ==================== Additional Styles from Frontend 2 ==================== */
+
+/* Glass Card Components */
+.glass-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.glass-card-hover {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.glass-card-hover:hover {
+  border-color: #dee2e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Premium Buttons */
+.btn-primary {
+  background: #4169E1;
+  color: white;
+  font-weight: 500;
+  padding: 0.625rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: none;
+  font-size: 0.9375rem;
+}
+
+.btn-primary:hover {
+  background: #3557c7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(65, 105, 225, 0.25);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #e9ecef;
+  padding: 0.625rem 1.5rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #495057;
+  font-size: 0.9375rem;
+}
+
+.btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.btn-secondary:active {
+  background: #e9ecef;
+}
+
+.btn-outline {
+  border: 1px solid #4169E1;
+  padding: 0.625rem 1.5rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: #4169E1;
+  background: transparent;
+  font-size: 0.9375rem;
+}
+
+.btn-outline:hover {
+  background: #4169E1;
+  color: white;
+}
+
+/* Input Fields */
+.input-field {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+  padding-left: 1rem;
+  width: 100%;
+  transition: all 0.2s ease;
+  color: #1a1a1a;
+  font-size: 0.9375rem;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #4169E1;
+  box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+}
+
+.input-field::placeholder {
+  color: #adb5bd;
+}
+
+/* Risk Badges */
+.risk-low {
+  background: #d1f4e0;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.risk-medium {
+  background: #fff3cd;
+  color: #997404;
+  border: 1px solid #ffe69c;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.risk-high {
+  background: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* Stats Card */
+.stat-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4169E1;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Risk Score Display */
+.risk-score-good {
+  color: #198754;
+}
+
+.risk-score-medium {
+  color: #ffc107;
+}
+
+.risk-score-poor {
+  color: #dc3545;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4169E1;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill-low {
+  background: #198754;
+}
+
+.progress-fill-medium {
+  background: #ffc107;
+}
+
+.progress-fill-high {
+  background: #dc3545;
+}
+
+/* Container */
+.container-custom {
+  max-width: 82rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 1.5rem 0;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-size: 0.9375rem;
+  color: #6c757d;
+}
+
+/* Loan Card */
+.loan-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.loan-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #dee2e6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
