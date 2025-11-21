@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useWeb3 } from '../context/Web3Context';
+import { useNavigate } from "react-router-dom";
+import Logo from "../components/Logo";
+import { useWeb3 } from "../context/Web3Context";
+import { useAuth } from "../contexts/AuthContext";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -12,9 +13,9 @@ const Landing = () => {
       await connectWallet();
     }
     if (user) {
-      navigate(user.userType === 'borrower' ? '/borrower' : '/lender');
+      navigate(user.userType === "borrower" ? "/borrower" : "/lender");
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
 
@@ -24,11 +25,7 @@ const Landing = () => {
       <nav className="border-b border-gray-200 bg-white">
         <div className="container-custom">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="text-2xl font-semibold tracking-tight text-black">
-                MicroLend
-              </div>
-            </div>
+            <Logo size="sm" />
 
             <div className="flex items-center space-x-3">
               {account ? (
@@ -44,23 +41,33 @@ const Landing = () => {
                   disabled={isConnecting}
                   className="btn-outline text-sm"
                 >
-                  {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                  {isConnecting ? "Connecting..." : "Connect Wallet"}
                 </button>
               )}
 
               {user ? (
                 <button
-                  onClick={() => navigate(user.userType === 'borrower' ? '/borrower' : '/lender')}
+                  onClick={() =>
+                    navigate(
+                      user.userType === "borrower" ? "/borrower" : "/lender"
+                    )
+                  }
                   className="btn-primary text-sm"
                 >
                   Dashboard
                 </button>
               ) : (
                 <>
-                  <button onClick={() => navigate('/login')} className="btn-outline text-sm">
+                  <button
+                    onClick={() => navigate("/login")}
+                    className="btn-outline text-sm"
+                  >
                     Sign In
                   </button>
-                  <button onClick={() => navigate('/signup')} className="btn-primary text-sm">
+                  <button
+                    onClick={() => navigate("/signup")}
+                    className="btn-primary text-sm"
+                  >
                     Sign Up
                   </button>
                 </>
@@ -80,22 +87,29 @@ const Landing = () => {
               for Everyone
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Access instant loans with AI-powered risk assessment and blockchain security.
-              Transparent, efficient, and built for the modern economy.
+              Access instant loans with AI-powered risk assessment and
+              blockchain security. Transparent, efficient, and built for the
+              modern economy.
             </p>
           </div>
 
           <div className="flex justify-center gap-3">
-            <button onClick={handleGetStarted} className="btn-primary px-8 py-4 text-lg">
+            <button
+              onClick={handleGetStarted}
+              className="btn-primary px-8 py-4 text-lg"
+            >
               Get Started
             </button>
-            <button onClick={() => {
-              // Scroll to features section
-              const featuresSection = document.getElementById('features');
-              if (featuresSection) {
-                featuresSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }} className="btn-outline px-8 py-4 text-lg">
+            <button
+              onClick={() => {
+                // Scroll to features section
+                const featuresSection = document.getElementById("features");
+                if (featuresSection) {
+                  featuresSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="btn-outline px-8 py-4 text-lg"
+            >
               Learn More
             </button>
           </div>
@@ -125,25 +139,35 @@ const Landing = () => {
             <div className="glass-card p-8">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <div className="text-sm text-gray-500 mb-1">Active Loan Request</div>
-                  <div className="text-3xl font-semibold text-black">2.5 ETH</div>
+                  <div className="text-sm text-gray-500 mb-1">
+                    Active Loan Request
+                  </div>
+                  <div className="text-3xl font-semibold text-black">
+                    2.5 ETH
+                  </div>
                 </div>
                 <div className="risk-low">Low Risk</div>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="glass-card p-4">
-                  <div className="text-xs text-gray-500 mb-1">Interest Rate</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    Interest Rate
+                  </div>
                   <div className="text-xl font-semibold text-black">10%</div>
                 </div>
                 <div className="glass-card p-4">
                   <div className="text-xs text-gray-500 mb-1">Duration</div>
-                  <div className="text-xl font-semibold text-black">90 days</div>
+                  <div className="text-xl font-semibold text-black">
+                    90 days
+                  </div>
                 </div>
               </div>
 
               <div className="space-y-3 mb-6">
-                <div className="text-sm font-medium text-black">Risk Assessment</div>
+                <div className="text-sm font-medium text-black">
+                  Risk Assessment
+                </div>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-gray-600">Credit Score</span>
@@ -160,13 +184,18 @@ const Landing = () => {
                 </div>
               </div>
 
-              <button onClick={() => {
-                if (user) {
-                  navigate(user.userType === 'lender' ? '/lender' : '/borrower');
-                } else {
-                  navigate('/signup');
-                }
-              }} className="btn-primary w-full py-3">
+              <button
+                onClick={() => {
+                  if (user) {
+                    navigate(
+                      user.userType === "lender" ? "/lender" : "/borrower"
+                    );
+                  } else {
+                    navigate("/signup");
+                  }
+                }}
+                className="btn-primary w-full py-3"
+              >
                 Fund This Loan
               </button>
             </div>
@@ -186,9 +215,12 @@ const Landing = () => {
             <div className="w-12 h-12 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold shadow-lg shadow-blue-200">
               1
             </div>
-            <h3 className="text-lg font-semibold text-black">Connect Your Wallet</h3>
+            <h3 className="text-lg font-semibold text-black">
+              Connect Your Wallet
+            </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Link your Web3 wallet securely. We support MetaMask and other popular wallets.
+              Link your Web3 wallet securely. We support MetaMask and other
+              popular wallets.
             </p>
           </div>
 
@@ -196,9 +228,12 @@ const Landing = () => {
             <div className="w-12 h-12 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold shadow-lg shadow-blue-200">
               2
             </div>
-            <h3 className="text-lg font-semibold text-black">AI Risk Assessment</h3>
+            <h3 className="text-lg font-semibold text-black">
+              AI Risk Assessment
+            </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Our XGBoost model analyzes your profile instantly with 92.3% accuracy.
+              Our XGBoost model analyzes your profile instantly with 92.3%
+              accuracy.
             </p>
           </div>
 
@@ -206,9 +241,12 @@ const Landing = () => {
             <div className="w-12 h-12 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold shadow-lg shadow-blue-200">
               3
             </div>
-            <h3 className="text-lg font-semibold text-black">Secure Transactions</h3>
+            <h3 className="text-lg font-semibold text-black">
+              Secure Transactions
+            </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Smart contracts handle escrow automatically with complete transparency.
+              Smart contracts handle escrow automatically with complete
+              transparency.
             </p>
           </div>
         </div>
@@ -231,7 +269,9 @@ const Landing = () => {
             <div className="glass-card p-6 text-center space-y-2">
               <div className="text-2xl">⛓️</div>
               <div className="font-semibold text-black">Blockchain</div>
-              <div className="text-xs text-gray-500">Ethereum Smart Contracts</div>
+              <div className="text-xs text-gray-500">
+                Ethereum Smart Contracts
+              </div>
             </div>
             <div className="glass-card p-6 text-center space-y-2">
               <div className="text-2xl">📊</div>
@@ -253,9 +293,15 @@ const Landing = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
             <div>© 2025 MicroLend. All rights reserved.</div>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-black transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-black transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-black transition-colors">Documentation</a>
+              <a href="#" className="hover:text-black transition-colors">
+                Terms of Service
+              </a>
+              <a href="#" className="hover:text-black transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-black transition-colors">
+                Documentation
+              </a>
             </div>
           </div>
         </div>

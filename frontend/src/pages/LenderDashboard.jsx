@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../components/Logo";
 import { useWeb3 } from "../context/Web3Context";
 import { useAuth } from "../contexts/AuthContext";
 import { useLoan } from "../hooks/useLoan";
@@ -228,9 +229,9 @@ const LenderDashboard = () => {
         <div className="container-custom py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-black">
-                Lender Dashboard
-              </h1>
+              <Logo size="sm" />
+              <div className="h-8 w-px bg-gray-300"></div>
+              <h1 className="text-xl font-bold text-black">Lender Dashboard</h1>
             </div>
             <div className="flex items-center space-x-3">
               {account ? (

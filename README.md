@@ -1,4 +1,11 @@
-# 🏦 MicroLend - Decentralized Micro-Lending Platform
+<a>
+    <picture>
+    <source media="(prefers-color-scheme: dark)" alt="MicrLend" srcset="./screenshots/Banner.png" />
+    <img alt="MicroLend" src="./screenshots/Banner.png" />
+    </picture>
+</a>
+
+# MicroLend - Decentralized Micro-Lending Platform
 
 A complete full-stack decentralized micro-lending platform combining blockchain technology, AI-powered risk assessment, and modern web technologies. Built for **HackWithStack Hackathon** by Team MicroLend.
 
@@ -99,7 +106,23 @@ Detailed view of loan information including terms, repayment schedule, and curre
 
 ![Loan Details](./screenshots/Loan-Details.png)
 
-## 🛠️ Tech Stack
+## 🚧 Challenges We Ran Into
+
+**MetaMask Transaction Signing Issues:** Initially struggled with ethers.js v6 breaking changes. The switch from `signer.sendTransaction()` to contract method calls required restructuring our Web3 provider initialization.
+
+**SHAP Integration with Flask:** The SHAP LinearExplainer required specific numpy array formatting. We solved this by preprocessing user input to match the exact feature order and data types expected by our LightGBM model.
+
+**MongoDB Atlas Connection Timeouts:** Intermittent connection drops during JWT authentication. Fixed by implementing connection pooling and proper error handling with automatic reconnection logic.
+
+**Smart Contract Gas Optimization:** Our initial MicroLending contract exceeded gas limits for loan creation. We optimized by removing redundant storage operations and using events instead of storing detailed loan histories on-chain.
+
+**Cross-Origin CORS Conflicts:** React frontend couldn't communicate with Flask backend during local development. Resolved by configuring Flask-CORS with specific origins and credential handling.
+
+**Gemini API Rate Limiting:** Hit API limits when generating explanations for multiple loans. Implemented caching for risk explanations and graceful fallback to SHAP-only mode when API is unavailable.
+
+Each challenge taught us valuable lessons about blockchain development, ML integration, and building production-ready full-stack applications.
+
+## ️ Tech Stack
 
 ### Frontend
 

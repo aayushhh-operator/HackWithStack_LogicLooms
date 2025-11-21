@@ -8,7 +8,6 @@ import {
   TrendingDown,
   TrendingUp,
   Wallet,
-  Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +21,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import Logo from "../components/Logo";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import {
@@ -241,14 +241,11 @@ const Dashboard = () => {
       <nav className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
+            <Logo size="md" />
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wider">
                 Dashboard
               </p>
-              <h1 className="text-2xl font-bold text-black">MICROLEND</h1>
             </div>
           </div>
           <div className="flex items-center gap-3">
