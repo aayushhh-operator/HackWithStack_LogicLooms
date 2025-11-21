@@ -657,7 +657,7 @@ Tests include:
 ## 📚 Additional Documentation
 
 - **[EXPLAINABLE_AI_COMPLETE.md](./MDs/EXPLAINABLE_AI_COMPLETE.md)** - Complete AI features guide
-- **[EXPLAINABLE_AI_SUMMARY.md](./EXPLAINABLE_AI_SUMMARY.md)** - Quick AI overview
+- **[EXPLAINABLE_AI_SUMMARY.md](./MDs/EXPLAINABLE_AI_SUMMARY.md)** - Quick AI overview
 - **[LAYOUT_ENHANCEMENT.md](./MDs/LAYOUT_ENHANCEMENT.md)** - UI/UX improvements
 - **[METAMASK_GUIDE.md](./MDs/METAMASK_GUIDE.md)** - Detailed wallet setup
 
